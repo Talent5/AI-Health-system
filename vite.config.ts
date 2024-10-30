@@ -3,34 +3,24 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 5173,
-    open: true,
-    // Add HMR configuration
-    hmr: {
-      overlay: true
-    }
-  },
+  base: './',
   build: {
-    // Output directory for production build
     outDir: 'dist',
-    // Generate sourcemaps for better debugging
     sourcemap: true,
-    // Optimize chunks
+    minify: 'terser',
+    target: 'es2018',
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'chart-vendor': ['recharts']
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          charts: ['recharts']
         }
       }
     }
   },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'recharts', 'lucide-react']
-  },
-  // Enable JSX in .js files
-  esbuild: {
-    jsxInject: `import React from 'react'`
+  server: {
+    port: 5173,
+    strictPort: true,
+    host: true
   }
 })
